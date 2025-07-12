@@ -1,4 +1,4 @@
-// TODO: need to convert the local storage to the backend storage, first new commit
+// TODO: take care of delete function
 
 import { useState, useEffect } from "react"; 
 import axios from "axios";
@@ -10,15 +10,15 @@ export function Main() {
     let randID = 0; 
     // task object
     type Task = {
+        id: number; 
         title: string;
         month: number; 
         day: number;
         year: number;
-        checked: boolean;
+        checked: number;
         type: string;
         monthly: number; // -1 if no
         weekly: number; // 
-        id: number; // YYYYMMDD#
     };
 
     // functions:
@@ -27,6 +27,7 @@ export function Main() {
     const monthOrWeek: string[] = ["Niether", "Monthly", "Weekly"]
     // States:
     // Have a state for a list of todo items, i can use .filter to query for certain tasks
+    const [loading, setLoading] = useState(true)
     const [todoList, setTodoList] = useState<Task[]>([]);
     //const [todaysTasks, setTodaysTasks] = useState<Task[]>([]);
 
@@ -39,23 +40,50 @@ export function Main() {
     const [isTodayChecked, setIsTodayChecked] = useState(false);
     const [monthlyOrWeeklyCheck, setMonthlyOrWeeklyCheck] = useState<string>(''); 
 
+    const convertObjectToTask = (object) => {
+         const newTask: Task = {
+            id: object[0], // flask the backend can handle this
+            title: object[1],
+            month: object[2], // the actual month is stored, not the indexed version
+            day: object[3], 
+            year: object[4],
+            checked: object[5],
+            type: object[6],
+            monthly: object[7], // -1 if no repeat, a number 1-31 if repeating
+            weekly: object[8], // -1 if no repeat, a number 0-6 if repeating
+        };
+        return newTask
+    }
+
     useEffect(() => {
         // Fetch tasks from the backend when the component mounts
         axios.get("http://127.0.0.1:5000/tasks") 
             .then(response => {
-                console.log(response.data.tasks);
+                const dataFromTable: Task[] = [];
+                for (let i = 0; i < response.data.length; i++)
+                {
+                    dataFromTable.push(convertObjectToTask(response.data[i]))
+                    console.log("title: ")
+                    console.log(dataFromTable[i].title)
+                }
+
+                setTodoList(dataFromTable)
+                setLoading(false)
             })
             .catch(error => {
                 console.error("Error fetching tasks:", error);
+                setLoading(false)
             });
     }, [])
-
 
     const navigateToAddClick = () => {
         setCurrRightSide("add");
     }
+    const navigateToListClick = () => {
+        setCurrRightSide("list");
+    }
     // final add task button handler
-    const addTaskButtonHandler = () => {
+    const addTaskButtonHandler = async () => {
         // date info for the given task
         var tmonth;
         var tday;
@@ -69,20 +97,12 @@ export function Main() {
             tday = date.getDate()
             tyear = date.getFullYear()
 
-            console.log("month: " + tmonth);
-            console.log("day: " + tday);
-            console.log("year: " + tyear);
         }
         else // use inputted dates
         {
             tmonth = parseInt(currTaskDate.substring(5, 7))
             tday = parseInt(currTaskDate.substring(8, 10))
             tyear = parseInt(currTaskDate.substring(0, 4))
-            // prints arent padded with 0
-            console.log("month: " + tmonth);
-            console.log("day: " + tday);
-            console.log("year: " + tyear);
-
 
         }
         // Handle if repeating is checked
@@ -101,26 +121,28 @@ export function Main() {
 
         }
         // create task object
-        const newTask: Task = {
+        let newTask: Task = {
+            id: Math.random(), // FIXME: when i implement flask the backend can handle this
             title: currTaskName,
             month: tmonth, // the actual month is stored, not the indexed version
             day: tday, 
             year: tyear,
-            checked: false,
+            checked: 0,
             type: "default",
             monthly: repeatOnDay, // -1 if no repeat, a number 1-31 if repeating
             weekly: repeatOnDayOfWeek, // -1 if no repeat, a number 0-6 if repeating
-            id: Math.random(), // FIXME: when i implement flask the backend can handle this
         };
+        let newId = -1
         // send the new task to the backend
-        axios.post("http://127.0.0.1:5000/tasks", newTask)
+        await axios.post("http://127.0.0.1:5000/tasks", newTask)
             .then(response => {
                 console.log("Task added successfully:", response.data);
+                newId = parseInt(response.data)
             })
             .catch(error => {
                 console.error("Error adding task:", error);
             });
-
+        newTask.id = newId
         // add new task to the list
         setTodoList([...todoList, newTask])
         // clear input fields
@@ -128,7 +150,6 @@ export function Main() {
         setMonthlyOrWeeklyCheck("Neither")
         // send to list screen 
         setCurrRightSide("list")
-
     }
 
     // checkbox handler
@@ -138,32 +159,64 @@ export function Main() {
 
     // handles when a task is clicked 
     const taskClickHandler = (id: number) => { // id is passed in as a number
+        console.log("selected id :" + id)
         const selectedTaskOg = todoList.find(t => t.id === id) // should probbaly change the original one too
         const selectedTaskLi = document.getElementById(id.toString())
-        if (selectedTaskOg?.checked) // task has already been selected, change to not selected
+        if (selectedTaskOg?.checked === 1) // task has already been selected, change to not selected
         {
             selectedTaskLi?.classList.remove("before:bg-red-400")
             selectedTaskLi?.classList.add("before:bg-white") // change to default
-            selectedTaskOg.checked = false;
+            selectedTaskOg.checked = 0;
         }
         else // change to selected 
         {
             selectedTaskLi?.classList.remove("before:bg-white")
             selectedTaskLi?.classList.add("before:bg-red-400")
-            selectedTaskOg.checked = true;
+            selectedTaskOg.checked = 1;
         }
     }
 
-    const deleteButtonHandler = () => {
-        
-        const eArr = todoList.filter(t => t.checked === false)
-        setTodoList(eArr)
-
+    const deleteButtonHandler = async () => {
+        console.log("delete button handler")
+        console.log(todoList)
+        let idnums: number[] = []
+        const checked = todoList.filter(t => t.checked === 1)
+        const unchecked = todoList.filter(t => t.checked === 0)
+        for (let i = 0; i < checked.length; i++) // fill out idNums with the ids of all tasks that will be deleted
+        {
+            idnums.push(checked[i].id)
+        }
+        await axios.delete("http://127.0.0.1:5000/tasks/delete-some", {
+            data : {
+                ids: idnums
+            },
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => {
+            console.log(response)
+        })
+        .catch(error => {
+            console.error(error)
+        })
+        console.log("checked")
+        console.log(checked)
+        console.log("unchecked")
+        console.log(unchecked)
+        // TODO: delete is working and this method successfully deletes tasks from the backend table, however its not automatically being displayed on the frontend. 
+        idnums = []
+        setTodoList(unchecked)
     }
     
     function getTodaysTasks(todoList: Task[], date: Date): Task[] {
+        if (todoList.length === 0)
+        {
+            return []
+        }
         // lists for daily tasks 
         let testDate = new Date(2025, 6, 15) // month has to be indexed here
+        console.log(todoList[0].day)
         const montlyTasks = todoList.filter(t => t.monthly === date.getDate()) 
         const weeklyTasks = todoList.filter(t => t.weekly === date.getDay())
         const uniqueTasks = todoList.filter(t => t.year === date.getFullYear() && t.day === date.getDate() && t.month === (date.getMonth()+1))
@@ -189,22 +242,22 @@ export function Main() {
                     todaysTasks.push(uniqueTasks[i]);
                 }
             }
-            return todaysTasks;
+        return todaysTasks;
     }
                 
     // renders the left side
     const leftSideRender = () => {
         return (
             <div className="h-screen w-1/3 bg-gray-300 relative">
-                <div className="flex flex-col">
+                <div className="flex flex-col gap-3">
                     {retrieveTodaysDate()}
-                    <div className="pl-6 pt-2">
+                    <div className="flex justify-center">
                         <button className="bg-blue-400 rounded-2xl h-13 w-50">app 1</button>
                     </div>
-                    <div className="pl-6 pt-2">
+                    <div className="flex justify-center">
                         <button className="bg-green-500 rounded-2xl h-13 w-50">app 1</button>
                     </div>
-                    <div className="pl-6 pt-2">
+                    <div className="flex justify-center">
                         <button className="bg-red-400 rounded-2xl h-13 w-50">app 1</button>
                     </div>
                 </div>        
@@ -217,7 +270,8 @@ export function Main() {
     const rightSideRender = () => {
         switch (currRightSide) {
             case "list":
-                //return listScreen();
+                // console.log("before render call")
+                // console.log(todoList)
                 return <ListScreen
                         getTodaysTasks={getTodaysTasks}
                         todoList={todoList}
@@ -229,7 +283,7 @@ export function Main() {
             case "add":
                 // return addScreen();
                 return <AddScreen
-                        navigateToListClick={navigateToAddClick}
+                        navigateToListClick={navigateToListClick}
                         currTaskName={currTaskName}
                         currTaskDate={currTaskDate}
                         setCurrTaskName={setCurrTaskName}
@@ -248,7 +302,7 @@ export function Main() {
             {/* left side */}
             {leftSideRender()}
             {/* right side */}
-            {rightSideRender() /* Will determine which screen to render*/}
+            {loading ? <div>laoding</div> : rightSideRender() /* Will determine which screen to render*/}
         </div>
     )
 }

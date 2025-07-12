@@ -16,7 +16,11 @@ const TestFunc = () => {
     )
 }
 const ListScreen = ({getTodaysTasks, todoList, date, navigateToAddClick, deleteButtonHandler, taskClickHandler}: listProps) => {
+    console.log("begining of list: ")
+    console.log(todoList)
+    console.log(todoList.length)
     const todaysTasks = getTodaysTasks(todoList, date);
+    console.log(todaysTasks)
     return (
         <div className="flex w-2/3 bg-white h-screen justify-center items-center relative">
             <button onClick={navigateToAddClick} className="bg-blue-300 rounded-full h-17 w-17 font-sans text-sm absolute right-3 bottom-3 ">add</button>
