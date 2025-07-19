@@ -23,7 +23,7 @@ export function Main() {
 
     // functions:
     //const todaysDate = retrieveTodaysDate(); 
-    const date = getDate(); 
+    let date = getDate(); 
     const monthOrWeek: string[] = ["Niether", "Monthly", "Weekly"]
     // States:
     // Have a state for a list of todo items, i can use .filter to query for certain tasks
@@ -81,6 +81,9 @@ export function Main() {
     }
     const navigateToListClick = () => {
         setCurrRightSide("list");
+    }
+    const navigateToNextClick = () => {
+        setCurrRightSide("next");
     }
     // final add task button handler
     const addTaskButtonHandler = async () => {
@@ -209,13 +212,14 @@ export function Main() {
         setTodoList(unchecked)
     }
     
+    // can be used to retrieve an array full of the tasks for a given date
     function getTodaysTasks(todoList: Task[], date: Date): Task[] {
         if (todoList.length === 0)
         {
             return []
         }
         // lists for daily tasks 
-        let testDate = new Date(2025, 6, 15) // month has to be indexed here
+        // let testDate = new Date(2025, 6, 15) // month has to be indexed here
         console.log(todoList[0].day)
         const montlyTasks = todoList.filter(t => t.monthly === date.getDate()) 
         const weeklyTasks = todoList.filter(t => t.weekly === date.getDay())
@@ -244,7 +248,17 @@ export function Main() {
             }
         return todaysTasks;
     }
-                
+     
+    // fucntion is used to create a list of the upcoming tasks for the next x amount of days
+    function getUpcomingTasks(todoList: Task[], date: Date): Task[] {
+        if (todoList.length === 0)
+        {
+            return []
+        }
+
+
+        return []
+    }
     // renders the left side
     const leftSideRender = () => {
         return (
@@ -279,6 +293,7 @@ export function Main() {
                         navigateToAddClick={navigateToAddClick}
                         deleteButtonHandler={deleteButtonHandler}
                         taskClickHandler={taskClickHandler}
+                        Task
                         />
             case "add":
                 // return addScreen();
@@ -294,6 +309,7 @@ export function Main() {
                         setMonthlyOrWeeklyCheck={setMonthlyOrWeeklyCheck}
                         addTaskButtonHandler={addTaskButtonHandler}
                         />
+
         }
     }
     // Main return: 
