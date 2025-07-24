@@ -2,7 +2,7 @@
 # add/get/delete works
 # however in the front end i now need to convert from local storage to the backend storage
 
-# To activate vm: . .venv/bin/activate
+# To activate vm: source .venv/bin/activate
 # Then to deactivate: deactivate
 # to run: flask --app app run
 from flask import Flask, request, jsonify

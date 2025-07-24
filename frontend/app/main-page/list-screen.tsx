@@ -89,7 +89,7 @@ export default function listScreen(props) {
         return (
             <div className="flex flex-col w-2/3 bg-white h-screen justify-center items-center relative">
                 <button onClick={props.navigateToAddClick} className="bg-blue-300 h-10 w-13 font-sans text-sm absolute right-3 top-3 ">next</button>
-                <button onClick={props.navigateToAddClick} className="bg-blue-300 rounded-full h-17 w-17 font-sans text-sm absolute right-3 bottom-3 ">add</button>
+                <button onClick={props.navigateToAddClick} className="bg-blue-300 rounded-full h-17 w-17 font-sans text-sm absolute right-3 bottom-3 ">ADD</button>
                 <button onClick={props.deleteButtonHandler} className="bg-red-300 rounded-full h-17 w-17 font-sans text-sm absolute left-3 bottom-3 ">delete</button>
                 { /* I AM MAKING A BOLD ASSUMPTION, that days and months can be single digits. so take january for example, it will be represented as 1, not 01*/ }
                 <div className="w-5/8 h-6/8 overflow-y-scroll  justify-center absolute top-4">
