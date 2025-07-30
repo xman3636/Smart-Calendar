@@ -40,6 +40,9 @@ export function Main() {
     const [isTodayChecked, setIsTodayChecked] = useState(false);
     const [monthlyOrWeeklyCheck, setMonthlyOrWeeklyCheck] = useState<string>(''); 
 
+    const [nextCounter, setNextCounter] = useState(0); // will keep track of the day to be displayed
+    
+
     const convertObjectToTask = (object) => {
          const newTask: Task = {
             id: object[0], // flask the backend can handle this
@@ -96,9 +99,12 @@ export function Main() {
         var repeatOnDayOfWeek = -1
         if (isTodayChecked) // use todays dates
         {
-            tmonth = (date.getMonth() + 1)
-            tday = date.getDate()
-            tyear = date.getFullYear()
+            let upcomingDay = new Date()
+            let specifiedDay = upcomingDay.getDate() + nextCounter
+            upcomingDay.setDate(specifiedDay)
+            tmonth = (upcomingDay.getMonth() + 1)
+            tday = upcomingDay.getDate()
+            tyear = upcomingDay.getFullYear()
 
         }
         else // use inputted dates
@@ -293,6 +299,8 @@ export function Main() {
                         navigateToAddClick={navigateToAddClick}
                         deleteButtonHandler={deleteButtonHandler}
                         taskClickHandler={taskClickHandler}
+                        nextCounter={nextCounter}
+                        setNextCounter={setNextCounter}
                         Task
                         />
             case "add":
