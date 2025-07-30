@@ -36,7 +36,7 @@ const AddScreen =
                     <div className="flex flex-col space-y-4">
                         <label className="text-black" >Task Title</label>
                         <label className="text-black" >Day</label>
-                        <label className="text-black" >Today?</label>
+                        <label className="text-black" >Current Day?</label>
                         <label className="text-black" >Repeating </label>
                     </div>
                     <div className="flex flex-col space-y-3">
