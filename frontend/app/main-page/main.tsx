@@ -268,17 +268,19 @@ export function Main() {
     // renders the left side
     const leftSideRender = () => {
         return (
-            <div className="h-screen w-1/3 bg-gray-300 relative">
+            <div className="h-screen w-1/3 bg-[#3C3D42] relative shadow-[4px_0_15px_rgba(0,0,0,.5)]" >
                 <div className="flex flex-col gap-3">
-                    {retrieveTodaysDate()}
-                    <div className="flex justify-center">
-                        <button className="bg-blue-400 rounded-2xl h-13 w-50">app 1</button>
+                    <div className="p-1">                        
+                        {retrieveTodaysDate()}
                     </div>
                     <div className="flex justify-center">
-                        <button className="bg-green-500 rounded-2xl h-13 w-50">app 1</button>
+                        <button className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl h-13 w-50">Photo Mode</button>
                     </div>
                     <div className="flex justify-center">
-                        <button className="bg-red-400 rounded-2xl h-13 w-50">app 1</button>
+                        <button className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl h-13 w-50">Wordle</button>
+                    </div>
+                    <div className="flex justify-center">
+                        <button className="bg-gradient-to-r from-red-500  to-red-600 rounded-2xl h-13 w-50">AI Summary</button>
                     </div>
                 </div>        
             </div>
@@ -347,8 +349,8 @@ function retrieveTodaysDate() {
 
     return (
         <div>
-            <p className="text-black text-4xl pt-1 pl-1">{today.toLocaleTimeString('en-US', { timeStyle: 'short'})}</p>
-            <p className="text-black text-2xl pt-1 pl-1">{formattedDate}</p>
+            <p className="text-white font-semibold text-4xl pt-1 pl-1">{today.toLocaleTimeString('en-US', { timeStyle: 'short'})}</p>
+            <p className="text-white text-2xl pt-1 pl-1">{formattedDate}</p>
         </div>
     );
 }
