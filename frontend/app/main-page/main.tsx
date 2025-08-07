@@ -274,13 +274,13 @@ export function Main() {
                         {retrieveTodaysDate()}
                     </div>
                     <div className="flex justify-center">
-                        <button className="bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl h-13 w-50">Photo Mode</button>
+                        <button className="bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl text-white h-13 w-50">Photo Mode</button>
                     </div>
                     <div className="flex justify-center">
-                        <button className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl h-13 w-50">Wordle</button>
+                        <button className="bg-gradient-to-r from-green-500 to-green-600 rounded-2xl text-white h-13 w-50">Wordle</button>
                     </div>
                     <div className="flex justify-center">
-                        <button className="bg-gradient-to-r from-red-500  to-red-600 rounded-2xl h-13 w-50">AI Summary</button>
+                        <button className="bg-gradient-to-r from-red-600  to-red-700 rounded-2xl text-white h-13 w-50">AI Summary</button>
                     </div>
                 </div>        
             </div>

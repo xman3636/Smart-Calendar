@@ -123,11 +123,11 @@ export default function listScreen(props) {
                     <div className='flex flex-col justify-center items-center col-span-1 gap-30'>
                         {/* <button onClick={() => {props.setNextCounter(props.nextCounter + 1); props.navigateToListClick}} className="bg-[#3868A6] h-10 w-13 font-sans text-sm absolute right-3 top-3 ">next</button>   993225 */}
                         <div className=' '>
-                            <button onClick={() => {props.setNextCounter(props.nextCounter + 1); props.navigateToListClick}} className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm h-10.5 w-12 text-center ">Next</button>
+                            <button onClick={() => {props.setNextCounter(props.nextCounter + 1); props.navigateToListClick}} className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm text-white h-10.5 w-12 text-center ">Next</button>
                         </div>
                         <div className='flex flex-col justify-center items-center gap-3'>
-                            <button onClick={props.navigateToAddClick} className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm h-10.5 w-20 text-center ">Add</button>
-                            <button onClick={props.deleteButtonHandler} className="bg-gradient-to-l from-red-500 via-red-600 to-red-700 font-medium rounded-lg text-sm h-10.5 w-20 text-center ">Delete</button> 
+                            <button onClick={props.navigateToAddClick} className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm text-white h-10.5 w-20 text-center ">Add</button>
+                            <button onClick={props.deleteButtonHandler} className="bg-gradient-to-l from-red-500 via-red-600 to-red-700 font-medium rounded-lg text-sm text-white h-10.5 w-20 text-center ">Delete</button> 
                         </div>
                     </div>
                 </div>          
@@ -141,10 +141,10 @@ export default function listScreen(props) {
             console.log(document)
             return (
                 <div className="flex flex-col w-2/3 bg-[#1C1E1F] h-screen justify-center items-center relative">
-                    <button onClick={() => {props.setNextCounter(props.nextCounter - 1); props.navigateToListClick}} className="bg-gradient-to-l from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm h-10.5 w-12 text-center absolute left-3 top-3 ">Back</button>
-                    <button onClick={() => {props.setNextCounter(props.nextCounter + 1); props.navigateToListClick}} className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm h-10.5 w-12 text-center absolute right-3 top-3 ">Next</button>
-                    <button onClick={props.navigateToAddClick} className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm h-10.5 w-20 text-center absolute right-3 bottom-3 ">Add</button>
-                    <button onClick={props.deleteButtonHandler} className="bg-gradient-to-l from-red-500 via-red-600 to-red-700 font-medium rounded-lg text-sm h-10.5 w-20 text-center absolute left-3 bottom-3 ">Delete</button>
+                    <button onClick={() => {props.setNextCounter(props.nextCounter - 1); props.navigateToListClick}} className="bg-gradient-to-l from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm text-white h-10.5 w-12 text-center absolute left-3 top-3 ">Back</button>
+                    <button onClick={() => {props.setNextCounter(props.nextCounter + 1); props.navigateToListClick}} className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm text-white h-10.5 w-12 text-center absolute right-3 top-3 ">Next</button>
+                    <button onClick={props.navigateToAddClick} className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm text-white h-10.5 w-20 text-center absolute right-3 bottom-3 ">Add</button>
+                    <button onClick={props.deleteButtonHandler} className="bg-gradient-to-l from-red-500 via-red-600 to-red-700 font-medium rounded-lg text-sm text-white h-10.5 w-20 text-center absolute left-3 bottom-3 ">Delete</button>
                     {check === false ?
                     
                         <p className='text-white font-semibold'>No tasks on: {(today.getMonth() + 1)}/{today.getDate()}/{today.getFullYear()}</p>
