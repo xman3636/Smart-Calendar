@@ -16,7 +16,7 @@ const MyDropdown = ({arr, title, setSelected}: MyComponentProps) => {
     
     return (
     <div>
-        <select className='text-black border rounded w-50 h-8' value={selectedValue} onChange={handleChange}>
+        <select className='text-white border rounded w-50 h-8' value={selectedValue} onChange={handleChange}>
             {arr.map((item, index) => (
                 <option key={index} value={item}>{item}</option>
             ))}
