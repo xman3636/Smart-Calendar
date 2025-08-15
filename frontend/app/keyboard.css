@@ -1,0 +1,25 @@
+/* Make all key characters white */
+.simple-keyboard .hg-button {
+  color: rgb(255, 255, 255);
+}
+
+/* Change background of keys */
+.simple-keyboard .hg-button {
+  background: #333539; /* dark gray */
+  padding: 10px
+}
+
+.simple-keyboard {
+  background-color: #131314; /* dark gray */
+}
+
+/* Change background on hover */
+.simple-keyboard .hg-button:hover {
+  background: #4a5568; /* lighter gray */
+}
+
+/* Change Enter key color */
+.simple-keyboard .hg-button[data-skbtn="{enter}"] {
+  background: #3182ce; /* blue */
+  color: white;
+}
