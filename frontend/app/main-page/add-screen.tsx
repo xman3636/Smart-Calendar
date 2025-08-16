@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import "../keyboard.css"
+
+
 interface addScreenProps {
     navigateToListClick,
     currTaskName,
@@ -45,14 +47,26 @@ const AddScreen =
                             {/* input field for task title */}
                             <input 
                                 required value={currTaskName} 
-                                onFocus={() => setShowKeyboard(!showKeyboard)}
+                                onFocus={() => {
+                                    setShowKeyboard(!showKeyboard)
+                                }}
                                 onChange={e => setCurrTaskName(e.target.value)} 
                                 type="text" 
                                 id="taskName" 
                                 name="taskName" 
                                 className="p-2 border border-white rounded w-50 h-8 text-white " 
                             />
-                            <input required value={currTaskDate} onChange={e => setCurrTaskDate(e.target.value)} type="date" id="taskDate" name="taskDate" className="p-2 border border-white rounded w-35 h-8 text-white" />
+                            <input 
+                                required value={currTaskDate} 
+                                onFocus={() => {
+                                    setShowKeyboard(false)
+                                }}
+                                onChange={e => setCurrTaskDate(e.target.value)} 
+                                type="date" 
+                                id="taskDate" 
+                                name="taskDate" 
+                                className="p-2 border border-white rounded w-35 h-8 text-white" 
+                            />
                             <input type="checkbox" checked={isTodayChecked} onChange={handleTodayCheckbox} className="size-5 accent-blue-300"></input>
                             <MyDropdown arr={monthOrWeek} title="MonthOrWeek" setSelected={setMonthlyOrWeeklyCheck}></MyDropdown>
                         </div>
@@ -65,13 +79,13 @@ const AddScreen =
                     </div>
                 </div>
                 <div
-                    className={`fixed bottom-0 right-0 transition-transform duration-300 ease-in-out w-full h-1/2  ${
+                    className={`fixed bottom-0 right-0 transition-transform duration-300 ease-in-out w-full   ${
                         showKeyboard ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
                     }`}
                     >
                     <Keyboard
                         onChange={(input) => {
-                        setCurrTaskName(input);
+                            setCurrTaskName(input);
                         }}
                         onKeyPress={(button) => {
                         if (button === "{enter}") {
