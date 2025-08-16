@@ -1,9 +1,8 @@
-import react from "react"
 import MyDropdown from "../components/MyDropdown"
 import React, { useState } from "react";
-import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import "../keyboard.css"
+import VirtualKeyboard from "~/components/VirtualKeyboard";
 
 
 interface addScreenProps {
@@ -19,7 +18,6 @@ interface addScreenProps {
     addTaskButtonHandler
 }
 
-
 // Add: form to add task
 const AddScreen = 
     ({navigateToListClick,
@@ -33,6 +31,7 @@ const AddScreen =
     setMonthlyOrWeeklyCheck,
     addTaskButtonHandler}: addScreenProps) => {
     const [showKeyboard, setShowKeyboard] = useState(false)
+    const [layoutName, setLayoutName] = useState("shift");
     return (
             <div className="w-2/3 bg-[#1C1E1F] h-screen">               
                 <div className="flex flex-col space-y-4 h-screen items-center justify-center" >
@@ -78,22 +77,7 @@ const AddScreen =
                         <button onClick={addTaskButtonHandler} className="bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 font-medium rounded-lg text-sm text-white h-10.5 w-25 text-center">Add Task</button>
                     </div>
                 </div>
-                <div
-                    className={`fixed bottom-0 right-0 transition-transform duration-300 ease-in-out w-full   ${
-                        showKeyboard ? "translate-y-0 opacity-100" : "translate-y-full opacity-0"
-                    }`}
-                    >
-                    <Keyboard
-                        onChange={(input) => {
-                            setCurrTaskName(input);
-                        }}
-                        onKeyPress={(button) => {
-                        if (button === "{enter}") {
-                            setShowKeyboard(false);
-                        }
-                        }}
-                    />
-                </div>
+                <VirtualKeyboard setCurrTaskName={setCurrTaskName} setShowKeyboard={setShowKeyboard} showKeyboard={showKeyboard}></VirtualKeyboard>
             </div>
     ) 
 }
